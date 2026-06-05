@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Sora:wght@600;700;800&display=swap');
+
+:root {
+  --bg: #070b16;
+  --border: rgba(148, 163, 184, 0.2);
+  --text: #c6d0e1;
+  --text-muted: #8d9bb2;
+  --text-soft: #93a0b7;
+  --text-strong: #f8fbff;
+  --ink: #050812;
+  --navy: #0d1430;
+  --royal: #6c8cff;
+  --sky: #3bb7ff;
+  --gold: #ffb21a;
+  --coral: #ff5a66;
+  --live: #16b981;
+  --panel: #0d1426;
+  --panel-2: #111a31;
+  --panel-3: #151f38;
+  --shadow-soft: 0 18px 48px rgba(0, 0, 0, 0.28);
+  --shadow-hover: 0 28px 70px rgba(0, 0, 0, 0.4);
+  --shadow-strong: 0 32px 90px rgba(3, 8, 20, 0.38);
+  color-scheme: dark;
+  font-family:
+    Manrope, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    linear-gradient(180deg, rgba(108, 140, 255, 0.12), transparent 480px),
+    radial-gradient(circle at 10% 6%, rgba(255, 178, 26, 0.14), transparent 28%),
+    radial-gradient(circle at 92% 16%, rgba(108, 140, 255, 0.18), transparent 32%),
+    radial-gradient(circle at 50% 100%, rgba(255, 90, 102, 0.08), transparent 36%),
+    var(--bg);
+}
+
+button,
+a,
+input {
+  font: inherit;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 3px solid rgba(22, 167, 255, 0.36);
+  outline-offset: 3px;
+}
+
+p,
+h1,
+h2,
+h3 {
+  overflow-wrap: anywhere;
+}
+
+h1,
+h2,
+h3,
+.brand strong {
+  font-family: Sora, Manrope, ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+p {
+  line-height: 1.65;
+}
