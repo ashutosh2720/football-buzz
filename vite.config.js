@@ -17,17 +17,17 @@ function footballDataProxy(apiKey) {
     name: 'football-data-proxy',
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
-        if (!req.url?.startsWith('/football-data')) {
+        if (!req.url?.startsWith('/api/football-data')) {
           next()
           return
         }
 
         if (!apiKey) {
-          sendJson(res, 500, { message: 'Missing VITE_FOOTBALL_DATA_API_KEY' })
+          sendJson(res, 500, { message: 'Missing FOOTBALL_DATA_API_KEY' })
           return
         }
 
-        const upstreamPath = req.url.replace(/^\/football-data/, '') || '/'
+        const upstreamPath = req.url.replace(/^\/api\/football-data/, '') || '/'
         const upstreamUrl = new URL(`${FOOTBALL_DATA_BASE_URL}${upstreamPath}`)
         const cacheKey = upstreamUrl.toString()
         const cached = footballDataCache.get(cacheKey)
@@ -86,6 +86,6 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, cwd(), '')
 
   return {
-    plugins: [footballDataProxy(env.VITE_FOOTBALL_DATA_API_KEY), react()],
+    plugins: [footballDataProxy(env.FOOTBALL_DATA_API_KEY || env.VITE_FOOTBALL_DATA_API_KEY), react()],
   }
 })

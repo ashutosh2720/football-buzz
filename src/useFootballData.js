@@ -36,9 +36,7 @@ function mapFallbackFixture(fixture) {
 function useAsyncData(loader, fallback, dependencies = []) {
   const [data, setData] = useState(fallback)
   const [loading, setLoading] = useState(hasApiKey)
-  const [error, setError] = useState(
-    hasApiKey ? null : 'Add VITE_FOOTBALL_DATA_API_KEY to load live data.',
-  )
+  const [error, setError] = useState(null)
   const [isFallback, setIsFallback] = useState(!hasApiKey)
 
   useEffect(() => {

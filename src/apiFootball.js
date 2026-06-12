@@ -1,9 +1,8 @@
-const API_BASE_URL = import.meta.env.VITE_FOOTBALL_DATA_API_BASE_URL || '/football-data'
-const API_KEY = import.meta.env.VITE_FOOTBALL_DATA_API_KEY
+const API_BASE_URL = import.meta.env.VITE_FOOTBALL_DATA_API_BASE_URL || '/api/football-data'
 const DEFAULT_COMPETITION = import.meta.env.VITE_FOOTBALL_DATA_COMPETITION || 'PL'
 const requestCache = new Map()
 
-export const hasApiKey = Boolean(API_KEY)
+export const hasApiKey = true
 
 async function requestJson(url) {
   const cacheKey = url.toString()
@@ -53,10 +52,6 @@ async function requestJson(url) {
 }
 
 async function apiFetch(path, params = {}) {
-  if (!API_KEY) {
-    throw new Error('Missing VITE_FOOTBALL_DATA_API_KEY')
-  }
-
   const url = new URL(`${API_BASE_URL}${path}`, window.location.origin)
   Object.entries(params).forEach(([key, value]) => {
     if (value !== undefined && value !== null && value !== '') {
