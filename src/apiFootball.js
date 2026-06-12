@@ -25,7 +25,21 @@ async function requestJson(url) {
       if (!response.ok) {
         const retryAfter = response.headers.get('retry-after')
         const suffix = retryAfter ? `, try again in ${retryAfter} seconds` : ''
-        throw new Error(`football-data.org request failed: ${response.status}${suffix}`)
+        let serverMessage
+
+        try {
+          const errorPayload = await response.clone().json()
+          serverMessage = errorPayload.message ? `: ${errorPayload.message}` : ''
+        } catch {
+          try {
+            const errorText = await response.clone().text()
+            serverMessage = errorText ? `: ${errorText.slice(0, 120)}` : ''
+          } catch {
+            serverMessage = ''
+          }
+        }
+
+        throw new Error(`football-data.org request failed: ${response.status}${serverMessage || ''}${suffix}`)
       }
 
       const payload = await response.json()
