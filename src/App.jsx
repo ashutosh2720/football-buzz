@@ -92,6 +92,7 @@ function App() {
         <Route path="/teams" element={<TeamsPage />} />
         <Route path="/news" element={<NewsPage />} />
         <Route path="/business" element={<BusinessPage />} />
+        <Route path="/fixtures/:fixtureId" element={<FixtureDetailPage />} />
         <Route path="/match/:matchId" element={<MatchDetailPage />} />
       </Routes>
     </div>
@@ -363,6 +364,79 @@ function MatchDetailPage() {
   )
 }
 
+function FixtureDetailPage() {
+  const { fixtureId } = useParams()
+  const { data, loading, error, isFallback } = useFixtureDetails(fixtureId)
+  const fixture = data[0]
+  const [reminderOn, setReminderOn] = useState(false)
+
+  return (
+    <PageShell
+      kicker={fixture.league}
+      title={`${fixture.home} vs ${fixture.away}`}
+      icon={<CalendarDays size={28} />}
+    >
+      <DataNotice loading={loading} error={error} isFallback={isFallback} />
+      <section className="match-detail fixture-detail">
+        <div className="detail-score">
+          <span>{fixture.home}</span>
+          <strong>vs</strong>
+          <span>{fixture.away}</span>
+        </div>
+        <div className="fixture-detail-grid">
+          <div>
+            <span className="detail-label">Kickoff</span>
+            <strong>{fixture.kickoff || `${fixture.time} IST`}</strong>
+          </div>
+          <div>
+            <span className="detail-label">Date</span>
+            <strong>{fixture.date || 'TBC'}</strong>
+          </div>
+          <div>
+            <span className="detail-label">Stage</span>
+            <strong>{fixture.stage || fixture.league}</strong>
+          </div>
+          <div>
+            <span className="detail-label">Venue</span>
+            <strong>{fixture.venue || 'Venue TBC'}</strong>
+          </div>
+        </div>
+        <p>{fixture.note}</p>
+        <button
+          className={reminderOn ? 'reminder active fixture-detail-action' : 'reminder fixture-detail-action'}
+          type="button"
+          onClick={() => setReminderOn((current) => !current)}
+        >
+          <Bell size={16} />
+          {reminderOn ? 'Reminder On' : 'Remind Me'}
+        </button>
+      </section>
+
+      <div className="content-grid">
+        <section className="panel">
+          <SectionHeading kicker="Fixture info" title="Match Window" />
+          <div className="fixture-info-list">
+            <span>Status</span>
+            <strong>{fixture.status}</strong>
+            <span>Competition</span>
+            <strong>{fixture.league}</strong>
+            <span>India time</span>
+            <strong>{fixture.kickoff || `${fixture.time} IST`}</strong>
+          </div>
+        </section>
+
+        <section className="panel">
+          <SectionHeading kicker="Fan tools" title="Pre-Match Pick" />
+          <p className="helper-text">Use this page for fixture previews, reminders, sponsor slots and lineups when the API provides them.</p>
+          <NavLink className="card-link" to="/fixtures">
+            Back to fixtures <ChevronRight size={15} />
+          </NavLink>
+        </section>
+      </div>
+    </PageShell>
+  )
+}
+
 function FixturesPage() {
   const [reminders, setReminders] = useState([])
   const { data: upcomingFixtures, loading, error, isFallback } = useUpcomingFixtures()
@@ -389,6 +463,9 @@ function FixturesPage() {
               <p>{fixture.stage} - {fixture.venue}</p>
             </div>
             <time>{fixture.time || fixture.kickoff} IST</time>
+            <NavLink to={`/fixtures/${fixture.id}`} className="card-link">
+              Open fixture <ChevronRight size={15} />
+            </NavLink>
             <button
               className={reminders.includes(fixture.id) ? 'reminder active' : 'reminder'}
               type="button"
@@ -416,7 +493,9 @@ function FixturePanel({ fixturesData }) {
         {panelFixtures.slice(0, 4).map((fixture) => (
           <article className="fixture-item" key={fixture.id}>
             <div>
-              <strong>{fixture.match || `${fixture.home} vs ${fixture.away}`}</strong>
+              <NavLink to={`/fixtures/${fixture.id}`} className="fixture-item-link">
+                {fixture.match || `${fixture.home} vs ${fixture.away}`}
+              </NavLink>
               <span>{fixture.stage}</span>
             </div>
             <time>{fixture.time || fixture.kickoff}</time>
